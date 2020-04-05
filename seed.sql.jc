@@ -1,0 +1,71 @@
+DROP DATABASE IF EXISTS cms_db;
+
+CREATE DATABASE cms_db;
+
+USE cms_db;
+
+CREATE TABLE department (
+  id INTEGER(10) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE role (
+  id INTEGER(10) NOT NULL,
+  title VARCHAR(30),
+  salary DECIMAL(10,2),
+  department_id INT,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE employee (
+  id INTEGER(10) NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
+  role_id INT NOT NULL,
+  manager_id INT,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO department ( id, name)
+VALUES (1, Management),(1, Sales),(3, Engineering),(4, Legal);
+
+-- INSERT INTO role (flavor, price, quantity)
+-- VALUES ("chocolate", 3.10, 120);
+
+-- INSERT INTO department (flavor, price, quantity)
+-- VALUES ("strawberry", 3.25, 75);
+
+
+-- JOINS
+-- show ALL books with authors
+-- INNER JOIN will only return all matching values from both tables
+-- SELECT title, firstName, lastName
+-- FROM books
+-- INNER JOIN authors ON books.authorId = authors.id;
+
+-- show ALL books, even if we don't know the author
+-- LEFT JOIN returns all of the values from the left table, and the matching ones from the right table
+-- SELECT title, firstName, lastName
+-- FROM books
+-- LEFT JOIN authors ON books.authorId = authors.id;
+
+-- show ALL books, even if we don't know the author
+-- RIGHT JOIN returns all of the values from the right table, and the matching ones from the left table
+-- SELECT title, firstName, lastName
+-- FROM books
+-- RIGHT JOIN authors ON books.authorId = authors.id;
+
+
+INSERT INTO department (, price, quantity)
+VALUES ("vanilla", 2.50, 100);
+
+INSERT INTO department (flavor, price, quantity)
+VALUES ("chocolate", 3.10, 120);
+
+INSERT INTO department (flavor, price, quantity)
+VALUES ("strawberry", 3.25, 75);
+
+-- ### Alternative way to insert more than one row
+-- INSERT INTO products (flavor, price, quantity)
+-- VALUES ("vanilla", 2.50, 100), ("chocolate", 3.10, 120), ("strawberry", 3.25, 75);

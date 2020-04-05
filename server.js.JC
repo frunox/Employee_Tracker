@@ -1,4 +1,5 @@
 var mysql = require("mysql");
+// var express = require("express");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -22,6 +23,6 @@ connection.connect(function (err) {
 
 
 // logs the actual query being run\
-console.log(query.sql);
+// console.log(query.sql);
 
 
