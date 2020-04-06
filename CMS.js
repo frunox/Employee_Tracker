@@ -88,8 +88,12 @@ function start() {
           updateEmployee();
           break
 
-        case "Exit the program":
-          return
+        case "Exit the progrm":
+          viewEmployee();
+          break;
+
+        default:
+          start();
       };
     })
     .catch(function (err) {
@@ -142,29 +146,103 @@ function addDepartment() {
 
 function addRole() {
   console.log("Creating a new role \n");
-  connection.query(
-    "INSERT INTO role SET ?",
-    // define an error function
-    function (error, response) {
-      // if there is an error, stop the program
-      if (error) throw error;
-      // if successful, console log the message below
-      console.log(response.affectedRows + " role created \n");
-      start();
+  var addRole = [
+    {
+      type: "input",
+      name: "roleId",
+      message: "Enter a role id",
+    },
+    {
+      type: "input",
+      name: "roleTitle",
+      message: "Enter the title for the new role",
+    },
+    {
+      type: "input",
+      name: "roleSalary",
+      message: "Enter the salary for the new role",
+    },
+    {
+      type: "input",
+      name: "roleDeptId",
+      message: "Enter the department id for the new role",
+    }
+  ];
+  inquirer
+    .prompt(addRole)
+    .then(function ({ roleId, roleTitle, roleSalary, roleDeptId }) {
+      connection.query(
+        // insert a new department with the given information
+        "INSERT INTO role SET ?",
+        {
+          id: roleId,
+          title: roleTitle,
+          salary: roleSalary,
+          department_id: roleDeptId
+        },
+        // define an error function
+        function (error, response) {
+          // if there is an error, stop the program
+          if (error) throw error;
+          // if successful, console log the message below
+          console.log(response.affectedRows + " role created \n");
+          // call start function to run through task options again
+          start();
+        })
+    })
+    .catch(function (err) {
+      console.log(err);
     });
-};
+}
 
 function addEmployee() {
-  console.log("Creating a new role \n");
-  connection.query(
-    "INSERT INTO employee SET ?",
-    // define an error function
-    function (error, response) {
-      // if there is an error, stop the program
-      if (error) throw error;
-      // if successful, console log the message below
-      console.log(response.affectedRows + " employee created \n");
-      start();
+  console.log("Creating a new employee \n");
+  var employeeQuestions = [
+    {
+      type: "input",
+      name: "empFirstName",
+      message: "Enter the new employee's first name",
+    },
+    {
+      type: "input",
+      name: "empLastName",
+      message: "Enter the new employee's last name",
+    },
+    {
+      type: "input",
+      name: "empRoleId",
+      message: "Enter the new employee's role ID",
+    },
+    {
+      type: "input",
+      name: "empManagerId",
+      message: "Enter the new employee's manager's ID",
+    }
+  ];
+  inquirer
+    .prompt(employeeQuestions)
+    .then(function ({ empFirstName, empLastName, empRoleId, empManagerId }) {
+      connection.query(
+        // insert a new department with the given information
+        "INSERT INTO employee SET ?",
+        {
+          first_name: empFirstName,
+          last_name: empLastName,
+          role_id: empRoleId,
+          manager_id: empManagerId
+        },
+        // define an error function
+        function (error, response) {
+          // if there is an error, stop the program
+          if (error) throw error;
+          // if successful, console log the message below
+          console.log(response.affectedRows + " employee created \n");
+          // call start function to run through task options again
+          start();
+        })
+    })
+    .catch(function (err) {
+      console.log(err);
     });
 }
 
@@ -218,3 +296,6 @@ function updateEmployee() {
     });
 };
 
+function endProgram() {
+  process.exit();
+}
