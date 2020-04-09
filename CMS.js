@@ -4,7 +4,7 @@ const db = require("./Db.js");
 // require npm package inquirer
 const inquirer = require("inquirer");
 
-// define constant questions for the inquirer prompt
+// provide prompts for the application's functions
 const questions = [
   {
     type: "rawlist",
@@ -27,29 +27,33 @@ const questions = [
   },
 ]
 
+// Start the application
 start();
 
 // define a function called Start to start the program
 function start() {
-  // use inquirer
+  // use inquirer to ask user which function to execute
   inquirer
-    // using inqirer's prompt method and feed in the the constant questions
+    // using inqirer's prompt method put questions in the terminal
     .prompt(questions)
     // use .then promise method with the answers parameter
     .then(function (answers) {
-      //use a switch case function and feed in the answer received from the start function
+      //use a switch case function to determine what functions to execute based on the user's selection
       switch (answers.task) {
         case "View departments":
+          // call method in DB.js to view departments
           db.viewDepartment()
             .then(function (data) {
               console.log("\n");
               console.table(data);
+              // re-run start to determine if the user wants to continue running the app or exit
               start();
             })
             .catch(error => console.log(error))
           break
 
         case "View roles":
+          // call methos in DB.js to view all roles
           db.viewRoles()
             .then(function (data) {
               console.log("\n");
@@ -60,6 +64,7 @@ function start() {
           break
 
         case "View employees":
+          // call method in DB.js to view all employees
           db.viewEmployees()
             .then(function (data) {
               console.log("\n");
@@ -70,6 +75,7 @@ function start() {
           break
 
         case "Add department":
+          // prepare questions to collect information about the new department
           var addDept = [
             {
               type: "input",
@@ -85,6 +91,7 @@ function start() {
           inquirer
             .prompt(addDept)
             .then(function ({ deptId, deptName }) {
+              // call method in DB.js to add a department
               db.addDepartment(deptId, deptName);
               console.log(`New department ${deptName} added`);
               start();
@@ -94,6 +101,7 @@ function start() {
           break
 
         case "Add role":
+          // prepare questions to get information on the new role
           var addRole = [
             {
               type: "input",
@@ -119,6 +127,7 @@ function start() {
           inquirer
             .prompt(addRole)
             .then(function ({ roleId, roleTitle, roleSalary, roleDeptId }) {
+              // call method in DB.js to add a new role
               db.addRole(roleId, roleTitle, roleSalary, roleDeptId);
               console.log(`New role ${roleTitle} added`);
               start();
@@ -127,6 +136,7 @@ function start() {
           break
 
         case "Add employee":
+          // prepare questions to get information on the new employee
           var employeeQuestions = [
             {
               type: "input",
@@ -152,6 +162,7 @@ function start() {
           inquirer
             .prompt(employeeQuestions)
             .then(function ({ empFirstName, empLastName, empRoleId, empManagerId }) {
+              // call the method to add a new employee
               db.addEmployee(empFirstName, empLastName, empRoleId, empManagerId);
               console.log(`New employee ${empFirstName} ${empLastName} added`);
               start();
@@ -160,13 +171,7 @@ function start() {
           break
 
         case "Update employee":
-          //db.viewEmployees()
-          // .then(function (data) {
-          //   console.log("\n");
-          //   console.table(data);
-          //   start();
-          // })
-          // .catch(error => console.log(error))
+          // prompt user for information on which employee and what information to update
           inquirer
             .prompt([
               {
@@ -218,7 +223,7 @@ function start() {
                 }
               }
             ]).then(function ({ columnToUpdate, newValue, employeeToUpdateId }) {
-              console.log('col: ' + columnToUpdate + "  newV: " + newValue + "  id: " + employeeToUpdateId)
+              // call method to update employee information
               db.employeeToUpdate(columnToUpdate, newValue, employeeToUpdateId);
               console.log('Employee information updated');
               start();
@@ -227,6 +232,7 @@ function start() {
           break
 
         case "Delete a department":
+          // request the name of the department to delete
           var deleteDept = [
             {
               type: "input",
@@ -237,6 +243,7 @@ function start() {
           inquirer
             .prompt(deleteDept)
             .then(function ({ deptName }) {
+              // call the method to delete a department
               db.deleteDepartment(deptName);
               console.log(`${deptName} department deleted`);
               start();
@@ -246,6 +253,7 @@ function start() {
           break
 
         case "Delete a role":
+          // prompt the user for the name of the role to remove
           var deleteRole = [
             {
               type: "input",
@@ -275,6 +283,7 @@ function start() {
           inquirer
             .prompt(deleteEmp)
             .then(function ({ empToRemove }) {
+              // call the method to delete an employee
               db.deleteEmployee(empToRemove);
               console.log(`Employee removed`);
               start();
@@ -284,6 +293,7 @@ function start() {
           break
 
         case "Exit the program":
+          // end the application
           console.log("Exiting the program")
           process.exit();
 

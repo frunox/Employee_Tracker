@@ -1,29 +1,33 @@
+// bring in the connection from connection.js and assign it to the variable 'connection'
 const connection = require("./connection")
-// const mysql = require("mysql");
-// const inquirer = require("inquirer");
 
-// create a class Dbfunctions, which contains methods for working with the database
+// create a class DB, which contains methods for working with the database based on information provided by the user
 class Db {
+  // constructor function with 1 property - the connection
   constructor(connection) {
     this.connection = connection
   }
 
-  // function to check for a name, and return it's value for the current employee
+  // method to view all departments
   viewDepartment() {
     console.log("Selecting all departments \n");
+    // return the results of the query back to CMS.js
     return this.connection.query('SELECT * FROM department');
   }
 
+  // method to view all roles
   viewRoles() {
     console.log("Selecting all roles \n");
     return this.connection.query("SELECT * FROM role")
   }
 
+  // method to view all employess
   viewEmployees() {
     console.log("Selecting all employees \n");
     return this.connection.query("SELECT * FROM employee")
   }
 
+  // method to add a new department
   addDepartment(deptId, deptName) {
     console.log("Creating a new department \n");
     this.connection.query(
@@ -35,6 +39,7 @@ class Db {
       })
   }
 
+  // method to add a new role
   addRole(roleId, roleTitle, roleSalary, roleDeptId) {
     console.log("Creating a new role \n");
     this.connection.query(
@@ -48,10 +53,11 @@ class Db {
       })
   }
 
+  // method to add a new employee
   addEmployee(empFirstName, empLastName, empRoleId, empManagerId) {
     console.log("Creating a new role \n");
     this.connection.query(
-      // insert a new role with the given information
+      // insert a new employee with the given information
       "INSERT INTO employee SET ?",
       {
         first_name: empFirstName,
@@ -61,44 +67,47 @@ class Db {
       })
   }
 
+  // method to update employee information
   employeeToUpdate(columnToUpdate, newValue, employeeToUpdateId) {
     console.log("Updating employee information \n");
-    // console.log('col: ' + columnToUpdate + "  newV: " + newValue + "  id: " + employeeToUpdateId);
+    // run the query to update the database
     this.connection.query(
-      // insert a new role with the given information
-      // "UPDATE employee SET last_name = 'Johnson' WHERE id = 4"
+      // UPDATE the employee table using user input
       "UPDATE employee SET ?? = ? WHERE id = ?",
       [columnToUpdate, newValue, employeeToUpdateId]
     )
   }
 
+  // method to delete a department
   deleteDepartment(deptName) {
     console.log("Delete a department \n");
     this.connection.query(
-      // insert a new department with the given information
+      // delete a department based on the name provided by the user
       "DELETE FROM department WHERE name = ?",
       [deptName]
     )
   }
 
+  // method to delete a role
   deleteRole(roleToRemove) {
     console.log(`Delete role ${roleToRemove} \n`);
     this.connection.query(
-      // insert a new department with the given information
+      // delete a role based on the title provided by the user
       "DELETE FROM role WHERE title = ?",
       [roleToRemove]
     )
   }
 
+  // method to remove an employee from the database
   deleteEmployee(empToRemove) {
     console.log(`Remove employee \n`);
     this.connection.query(
-      // insert a new department with the given information
+      // remove a user based on the id provided by the user
       "DELETE FROM employee WHERE id = ?",
       [empToRemove]
     )
   }
 
 }
-// all code here to be available in other files
+// allow other files to use the methods in the class, along with the connection
 module.exports = new Db(connection);
