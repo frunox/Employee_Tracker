@@ -72,20 +72,33 @@ class Db {
     )
   }
 
-  // updateEmployee(empFirstName, empLastName, empRoleId, empManagerId) {
-  //   console.log("Creating a new role \n");
-  //   this.connection.query(
-  //     // insert a new role with the given information
-  //     "INSERT INTO employee SET ?",
-  //     {
-  //       first_name: empFirstName,
-  //       last_name: empLastName,
-  //       role_id: empRoleId,
-  //       manager_id: empManagerId
-  //     })
-  // }
+  deleteDepartment(deptName) {
+    console.log("Delete a department \n");
+    this.connection.query(
+      // insert a new department with the given information
+      "DELETE FROM department WHERE name = ?",
+      [deptName]
+    )
+  }
 
-};
+  deleteRole(roleToRemove) {
+    console.log(`Delete role ${roleToRemove} \n`);
+    this.connection.query(
+      // insert a new department with the given information
+      "DELETE FROM role WHERE title = ?",
+      [roleToRemove]
+    )
+  }
 
+  deleteEmployee(empToRemove) {
+    console.log(`Remove employee \n`);
+    this.connection.query(
+      // insert a new department with the given information
+      "DELETE FROM employee WHERE id = ?",
+      [empToRemove]
+    )
+  }
+
+}
 // all code here to be available in other files
 module.exports = new Db(connection);

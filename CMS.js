@@ -18,6 +18,9 @@ const questions = [
         "Add role",
         "Add employee",
         "Update employee",
+        "Delete a department",
+        "Delete a role",
+        "Remove an employee",
         "Exit the program"
       ],
     name: "task"
@@ -83,7 +86,7 @@ function start() {
             .prompt(addDept)
             .then(function ({ deptId, deptName }) {
               db.addDepartment(deptId, deptName);
-              console.log('New department added');
+              console.log(`New department ${deptName} added`);
               start();
             })
             .catch(error => console.log(error))
@@ -117,7 +120,7 @@ function start() {
             .prompt(addRole)
             .then(function ({ roleId, roleTitle, roleSalary, roleDeptId }) {
               db.addRole(roleId, roleTitle, roleSalary, roleDeptId);
-              console.log('New role added');
+              console.log(`New role ${roleTitle} added`);
               start();
             })
             .catch(error => console.log(error))
@@ -150,7 +153,7 @@ function start() {
             .prompt(employeeQuestions)
             .then(function ({ empFirstName, empLastName, empRoleId, empManagerId }) {
               db.addEmployee(empFirstName, empLastName, empRoleId, empManagerId);
-              console.log('New employee added');
+              console.log(`New employee ${empFirstName} ${empLastName} added`);
               start();
             })
             .catch(error => console.log(error))
@@ -223,6 +226,63 @@ function start() {
             .catch(error => console.log(error))
           break
 
+        case "Delete a department":
+          var deleteDept = [
+            {
+              type: "input",
+              name: "deptName",
+              message: "Enter the name of the department to delete",
+            }
+          ];
+          inquirer
+            .prompt(deleteDept)
+            .then(function ({ deptName }) {
+              db.deleteDepartment(deptName);
+              console.log(`${deptName} department deleted`);
+              start();
+            })
+            .catch(error => console.log(error))
+
+          break
+
+        case "Delete a role":
+          var deleteRole = [
+            {
+              type: "input",
+              name: "roleToRemove",
+              message: "Enter the name of the role to delete",
+            }
+          ];
+          inquirer
+            .prompt(deleteRole)
+            .then(function ({ roleToRemove }) {
+              db.deleteRole(roleToRemove);
+              console.log(`${roleToRemove} department deleted`);
+              start();
+            })
+            .catch(error => console.log(error))
+
+          break
+
+        case "Remove an employee":
+          var deleteEmp = [
+            {
+              type: "input",
+              name: "empToRemove",
+              message: "Enter the id of the employee to remove",
+            }
+          ];
+          inquirer
+            .prompt(deleteEmp)
+            .then(function ({ empToRemove }) {
+              db.deleteEmployee(empToRemove);
+              console.log(`Employee removed`);
+              start();
+            })
+            .catch(error => console.log(error))
+
+          break
+
         case "Exit the program":
           console.log("Exiting the program")
           process.exit();
@@ -233,18 +293,3 @@ function start() {
       console.log(err);
     });
 };
-
-
-
-// function updateEmployee() {
-//   console.log("Updating employee information \n");
-//   connection.query(
-//     "UPDATE employee SET ? WHERE ?",
-//     function (error, response) {
-//       // if there is an error, stop the program
-//       if (error) throw error;
-//       // if successful, console log the message below
-//       console.log(response.affectedRows + " employee information updated \n");
-//       start();
-//     });
-// };
