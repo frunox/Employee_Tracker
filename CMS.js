@@ -157,7 +157,70 @@ function start() {
           break
 
         case "Update employee":
-          updateEmployee();
+          //db.viewEmployees()
+          // .then(function (data) {
+          //   console.log("\n");
+          //   console.table(data);
+          //   start();
+          // })
+          // .catch(error => console.log(error))
+          inquirer
+            .prompt([
+              {
+                type: 'input',
+                message: 'Select the id of the employee to update',
+                name: 'employeeToUpdateId',
+              },
+              {
+                type: 'list',
+                message: 'Select what you want to UPDATE',
+                name: 'columnToUpdate',
+                choices: [
+                  'first_name',
+                  'last_name',
+                  'role_id',
+                  'manager_id'
+                ]
+              },
+              {
+                type: 'input',
+                message: 'Enter the updated FIRST name',
+                name: 'newValue',
+                when: function (answer) {
+                  return answer.columnToUpdate === 'first_name'
+                }
+              },
+              {
+                type: 'input',
+                message: 'Enter the updated LAST name',
+                name: 'newValue',
+                when: function (answer) {
+                  return answer.columnToUpdate === 'last_name';
+                }
+              },
+              {
+                type: 'input',
+                message: 'Enter the update ROLE ID',
+                name: 'newValue',
+                when: function (answer) {
+                  return answer.columnToUpdate === 'role_id';
+                }
+              },
+              {
+                type: 'input',
+                message: 'Enter the updated MANAGER ID',
+                name: 'newValue',
+                when: function (answer) {
+                  return answer.columnToUpdate === 'manager_id';
+                }
+              }
+            ]).then(function ({ columnToUpdate, newValue, employeeToUpdateId }) {
+              console.log('col: ' + columnToUpdate + "  newV: " + newValue + "  id: " + employeeToUpdateId)
+              db.employeeToUpdate(columnToUpdate, newValue, employeeToUpdateId);
+              console.log('Employee information updated');
+              start();
+            })
+            .catch(error => console.log(error))
           break
 
         case "Exit the program":

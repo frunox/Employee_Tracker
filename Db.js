@@ -1,6 +1,6 @@
 const connection = require("./connection")
-const mysql = require("mysql");
-const inquirer = require("inquirer");
+// const mysql = require("mysql");
+// const inquirer = require("inquirer");
 
 // create a class Dbfunctions, which contains methods for working with the database
 class Db {
@@ -60,6 +60,30 @@ class Db {
         manager_id: empManagerId
       })
   }
+
+  employeeToUpdate(columnToUpdate, newValue, employeeToUpdateId) {
+    console.log("Updating employee information \n");
+    // console.log('col: ' + columnToUpdate + "  newV: " + newValue + "  id: " + employeeToUpdateId);
+    this.connection.query(
+      // insert a new role with the given information
+      // "UPDATE employee SET last_name = 'Johnson' WHERE id = 4"
+      "UPDATE employee SET ?? = ? WHERE id = ?",
+      [columnToUpdate, newValue, employeeToUpdateId]
+    )
+  }
+
+  // updateEmployee(empFirstName, empLastName, empRoleId, empManagerId) {
+  //   console.log("Creating a new role \n");
+  //   this.connection.query(
+  //     // insert a new role with the given information
+  //     "INSERT INTO employee SET ?",
+  //     {
+  //       first_name: empFirstName,
+  //       last_name: empLastName,
+  //       role_id: empRoleId,
+  //       manager_id: empManagerId
+  //     })
+  // }
 
 };
 

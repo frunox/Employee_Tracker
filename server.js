@@ -18,3 +18,6 @@ require("./routes/apiRoutes")(app);
 
 //Start the Server on the port defined above
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
+
+//  END OF BOILERPLATE  /////////////////////////////////////
+
